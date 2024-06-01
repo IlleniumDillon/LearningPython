@@ -1,0 +1,73 @@
+% \documentclass 命令必须出现在LaTeX文档的第一行，
+% 它用来指定文档的类型。在这里，我们指定文档的类型为article，
+% 这意味着我们正在写一篇文章。在方括号中，我们指定了文档的一些属性，
+% 比如纸张的大小和字体的大小。在这里，我们指定了纸张的大小为A4，字体的大小为12磅。
+% 这些属性是可选的，你可以根据自己的需要来指定。如果你不指定这些属性，LaTeX会使用默认的属性。
+\documentclass[a4paper,12pt]{article}
+% 在这里，我们使用usepackage命令来引入一些宏包。
+% 宏包是一些预先定义好的命令和环境，可以帮助我们更方便地排版文档。
+% 我们使用的第一个宏包是ctex。这个宏包是用来支持中文的。
+% 我们在方括号中指定了选项UTF8，这意味着我们使用UTF-8编码来编写文档。
+\usepackage[UTF8]{ctex}
+% 我们使用的第二个宏包是hyperref。这个宏包是用来生成超链接的。
+% 我们在方括号中指定了选项colorlinks，这意味着超链接的文字会显示为彩色。
+% 如果你不指定这个选项，超链接的文字会显示为黑色。
+\usepackage{hyperref}[colorlinks]
+% \begin{document} 和 \end{document} 之间的部分是文档的正文部分。
+% \begin 之前的部分是导言区，用来指定文档的类型、属性和引入宏包等。
+\begin{document}
+
+    % 在这里，我们使用title命令来指定文章的标题。
+    \title{Readme of Python Learning}
+    % 在这里，我们使用author命令来指定文章的作者。
+    \author{IlleniumDillon}
+    % 在这里，我们使用date命令来指定文章的日期。
+    \date{\today}
+    % 在这里，我们使用maketitle命令来生成标题。
+    \maketitle  
+
+    % 如果需要的话，可以将文档分成几个部分，每个部分可以放在一个section中。
+    % 在这里，我们使用section命令来生成一个部分。
+    % 下列分节命令适用于article文档类型，对于其他文档类型，可能会有不同的分节命令。
+    % \section{...}
+    % \subsection{...}
+    % \subsubsection{...}
+    % \paragraph{...}
+    % \subparagraph{...}
+    \section{这是什么？}
+        这是一个Python学习的文档,用来记录Python学习的过程。顺便也可以用来练习LaTeX的使用。
+    \section{有什么内容？}
+        % \href{}{} 命令用来生成超链接。
+        % 第一个参数是链接的地址，第二个参数是链接的文字。
+        Python学习的主线是廖雪峰的Python教程, 具体参见\href{https://www.liaoxuefeng.com/wiki/1016959663602400}{Python教程}。
+        除此之外,还会记录一些Python的基础知识和一些代码实践。\par
+        LaTeX的学习主要参考\href{https://oi-wiki.org/tools/latex/}{LaTeX入门}。
+    \section{进度}
+        % \begin{table} 命令用来生成表格。
+        % \centering 命令用来将表格居中。
+        \begin{table}
+        \centering
+            % \begin{tabular} 命令用来生成表格的内容。
+            % l 表示内容左对齐，c 表示内容居中，r 表示内容右对齐。
+            % | 表示生成竖线。
+            % \hline 用来生成横线。
+            \begin{tabular}{lc}
+                项目                    &   更新时间 \\
+                \hline
+                构建仓库                &   2024-06-01 \\
+                第一章 Python基础       &   - \\
+                第二章 函数             &   - \\
+                第三章 高级特性         &   - \\
+                第四章 函数式编程       &   - \\
+                第五章 模块            &   - \\
+                第六章 面向对象编程     &   - \\
+                第七章 面向对象高级编程 &   - \\
+                第八章 错误、调试和测试 &   - \\
+                第九章 IO编程          &   - \\
+                第十章 进程和线程      &   - \\
+                第十一章 正则表达式    &   - \\
+                第十二章 异步IO        &   - \\
+            \end{tabular}
+        \end{table}
+
+\end{document}
