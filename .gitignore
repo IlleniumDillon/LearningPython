@@ -6,3 +6,5 @@
 *.bak
 *.fdb_latexmk
 *.fls
+*.pygtex
+*.pygstyle

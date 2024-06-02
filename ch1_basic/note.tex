@@ -1,0 +1,126 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[UTF8]{ctex}
+\usepackage{algorithm}
+\usepackage{minted}
+\usepackage{listings}
+\usepackage{hyperref}[colorlinks]
+
+\begin{document}
+    \title{基本语法}
+    \author{IlleniumDillon}
+    \date{\today}
+    \maketitle
+
+    \section{文件编码}
+        默认情况下，Python 源码文件的编码是 UTF-8。
+        这种编码支持世界上大多数语言的字符，可以用
+        于字符串字面值、变量、函数名及注释。如果不
+        使用默认编码，则要声明文件的编码，文件的第
+        一行要写成特殊注释。句法如下：
+        \begin{listing}[h]
+            \begin{minted}{python}
+                # -*- coding: encoding -*-
+            \end{minted}
+        \end{listing}
+        其中 encoding 是文件的编码，常见的编码有
+        utf-8、gbk、gb2312 等。具体可见\href{https://docs.python.org/zh-cn/3/library/codecs.html#module-codecs}{Python 文档}。
+        具体地，如果文件的编码是 utf-8，则第一行应该写成：
+        \begin{listing}[h]
+            \begin{minted}{python}
+                # -*- coding: utf-8 -*-
+            \end{minted}
+        \end{listing}
+        第一行的规则也有一种例外情况，源码以 
+        UnixShell 脚本开始，前两行可以写成：
+        \begin{listing}[h]
+            \begin{minted}{python}
+                #!/usr/bin/env python3
+                # -*- coding: utf-8 -*-
+            \end{minted}
+        \end{listing}
+        那么第一行的作用是告诉操作系统，这个脚本
+        用 Python3 解释器执行，并指出解释器的路径。
+        在类 Unix 系统中，可以直接运行这个脚本，
+        但是在 Windows 系统中，这两行会被忽略。
+    \section{注释}
+        Python 的注释以 \# 开头，直到行尾结束。注释
+        可以单独占一行，也可以跟在语句后面。注释
+        用于解释代码的功能，提高代码的可读性。注释
+        可以是单行注释，也可以是多行注释。单行注
+        释以 \# 开头，多行注释以三个单引号或三个双
+        引号开始和结束。多行注释可以用于函数的文档
+        字符串，也可以用于多行注释。
+        \begin{listing}[h]
+            \begin{minted}{python}
+                # 这是一个单行注释
+                print("Hello, World!") # 这也是一个单行注释
+                '''
+                这是一个多行注释
+                这是一个多行注释
+                这是一个多行注释
+                '''
+            \end{minted}
+        \end{listing}
+    \section{缩进}
+        Python 使用缩进来表示代码块，缩进是 Python
+        语法的一部分。缩进的空格数是可变的，但是
+        同一个代码块的语句必须包含相同的缩进空格
+        数。一般情况下，缩进使用 4 个空格，也可
+        以使用 2 个空格或者 8 个空格。缩进的空格
+        数不是固定的，但是同一个代码块的语句必须
+        使用相同的缩进空格数。缩进的空格数不是固
+        定的，但是同一个代码块的语句必须使用相同
+        的缩进空格数。缩进的空格数不是固定的，但
+        是同一个代码块的语句必须使用相同的缩进空
+        格数。缩进的空格数不是固定的，但是同一个
+        代码块的语句必须使用相同的缩进空格数。
+        \begin{listing}[h]
+            \begin{minted}{python}
+                if True:
+                    print("True")
+                else:
+                    print("False")
+            \end{minted}
+        \end{listing}
+    \section{行尾分号}
+        Python 语句不需要使用分号结尾，但是如果
+        一行中有多个语句，可以使用分号分隔。分号
+        用于分隔同一行的多个语句，但是不推荐在同
+        一行中写多个语句。如果一行中有多个语句，
+        可以使用分号分隔，但是不推荐这样做。
+        \begin{listing}[h]
+            \begin{minted}{python}
+                print("Hello, World!"); print("Hello, Python!")
+            \end{minted}
+        \end{listing}
+    \section{多行语句}
+        Python 语句通常以新行开始，但是可以使用
+        反斜杠 \ 来实现多行语句。反斜杠 \ 可以用
+        于将一行的语句分成多行显示，但是不推荐使
+        用反斜杠 \ 来实现多行语句。如果一行的语句
+        太长，可以使用反斜杠 \ 将其分成多行显示。
+        \begin{listing}[h]
+            \begin{minted}{python}
+                total = 1 + 2 + 3 + \
+                        4 + 5 + 6 + \
+                        7 + 8 + 9
+            \end{minted}
+        \end{listing}
+    \section{引号}
+        Python 可以使用单引号、双引号和三引号来
+        表示字符串。单引号和双引号的作用是相同的，
+        三引号用于表示多行字符串。单引号和双引号
+        可以用于表示字符串，三引号用于表示多行字
+        符串。单引号和双引号的作用是相同的，三引
+        号用于表示多行字符串。单引号和双引号的作
+        用是相同的，三引号用于表示多行字符串。
+        \begin{listing}[h]
+            \begin{minted}{python}
+                print('Hello, World!')
+                print("Hello, Python!")
+                print('''Hello, World!
+                Hello, Python!''')
+            \end{minted}
+        \end{listing}
+    
+\end{document}
