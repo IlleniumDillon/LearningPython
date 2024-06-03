@@ -6,18 +6,191 @@
 \usepackage{hyperref}[colorlinks]
 
 \begin{document}
-    \title{流程控制}
-    \author{IlleniumDillon}
-    \date{\today}
-    \maketitle
+\title{流程控制}
+\author{IlleniumDillon}
+\date{\today}
+\maketitle
 
-    \section{if 语句}
-    \section{while 语句}
-    \section{for 语句}
-    \section{range() 语句}
-    \section{循环中的 break、continue 语句及 else 子句}
-    \section{pass 语句}
-    \section{match 语句}
-    
+\section{if 语句}
+可有零个或多个 elif 部分，以及一个可选的 else 部分。关键字 'elif' 是 'else if' 的缩写，用于避免过多的缩进。一个 if … elif … elif … 序列可以看作其他语言中的 switch 或 case 语句。
+如果是把一个值与多个常量比较，或者检查特定类型或属性，match 语句更有用。\par
+\begin{listing}[h!]
+\begin{minted}{python}
+x = int(input("Please enter an integer: "))
+if x < 0:
+    x = 0
+    print('Negative changed to zero')
+elif x == 0:
+    print('Zero')
+elif x == 1:
+    print('Single')
+else:
+    print('More')
+\end{minted}
+\end{listing}
 
+\section{match 语句}
+match 语句是一种更通用的形式，可以替代一系列 if … elif … elif … 语句。它比一系列 if … elif … elif … 语句更简洁，更易读。
+它接受一个表达式，然后按顺序检查每个模式，并执行与第一个匹配的模式相关联的代码块。
+最简单形式是将一个主语值与一个或多个字面值进行比较：\par
+\begin{listing}[h!]
+\begin{minted}{python}
+def http_error(status):
+    match status:
+        case 400:
+            return "Bad request"
+        case 404:
+            return "Not found"
+        case 418:
+            return "I'm a teapot"
+        case _:
+            return "Something else"
+\end{minted}
+\end{listing}
+注意最后一个 case 语句，它使用了一个通配符模式，即一个下划线。这个模式
+匹配任何值，这使得 match 语句总是有一个分支可以执行。如果没有 case 匹配成功，
+则不会执行任何分支。\par
+可以使用 | 运算符将多个模式组合在一起，以便在一个分支中匹配多个模式：\par
+\begin{listing}[h!]
+\begin{minted}{python}
+case 401 | 403 | 404:
+    return "Not allowed"
+\end{minted}
+\end{listing}
+形如解包赋值的模式可被用于绑定变量：\par
+\begin{listing}[h!]
+\begin{minted}{python}
+# point is an (x, y) tuple
+match point:
+    case (0, 0):
+        print("Origin")
+    case (0, y):
+        print(f"Y={y}")
+    case (x, 0):
+        print(f"X={x}")
+    case (x, y):
+        print(f"X={x}, Y={y}")
+    case _:
+        raise ValueError("Not a point")
+\end{minted}
+\end{listing}
+第一个模式有两个字面值，可视为前述字面值模式的扩展。
+接下来的两个模式结合了一个字面值和一个变量，变量绑定
+了来自主语（point）的一个值。第四个模式捕获了两个值，
+使其在概念上与解包赋值 (x, y) = point 类似。\par
+如果使用类来组织数据，可以使用模式匹配来检查类的属性：\par
+\begin{listing}[h!]
+\begin{minted}{python}
+class Point:
+    __match_args__ = ('x', 'y')
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+match points:
+    case []:
+        print("No points")
+    case [Point(0, 0)]:
+        print("The origin")
+    case [Point(x, y)]:
+        print(f"Single point {x}, {y}")
+    case [Point(0, y1), Point(0, y2)]:
+        print(f"Two on the Y axis at {y1}, {y2}")
+    case _:
+        print("Something else")
+\end{minted}
+\end{listing}
+可以通过在类定义中添加 \_\_match\_args\_\_ 属性来指定模式匹配的参数。
+这个属性是一个元组，包含了类的参数名称。在这个例子中，Point 类有两个参数，
+x 和 y。这个属性告诉 match 语句如何解构 Point 实例。\par
+可以向模式添加条件，以便在模式匹配成功时执行更复杂的检查，
+如果约束项为假值，则 match 将继续尝试下一个 case 语句块。 
+请注意值的捕获发生在约束项被求值之前。:\par
+\begin{listing}[h!]
+\begin{minted}{python}
+match point:
+    case Point(x, y) if x == y:
+        print(f"Diagonal point {x}, {y}")
+    case Point(x, y):
+        print(f"Ordinary point {x}, {y}")
+\end{minted}
+\end{listing}
+match语句还有一些其他特性：\par
+与解包赋值类似，元组和列表模式具有完全相同的含义
+并且实际上都能匹配任意序列，区别是它们不能匹配迭代器或字符串。\par
+序列模式支持扩展解包：[x, y, $\ast$rest] 和 (x, y, $\ast$rest) 和相应的解包赋值做的事是一样的。
+接在 $\ast$ 后的名称也可以为 \_，所以 (x, y, $\ast$\_) 匹配含至少两项的序列，而不必绑定剩余的项。\par
+映射模式：{"bandwidth": b, "latency": l} 从字典中捕获 "bandwidth" 
+和 "latency" 的值。额外的键会被忽略，这一点与序列模式不同。$\ast\ast$rest 
+这样的解包也支持。但 $\ast\ast\_$ 将会是冗余的，故不允许使用。\par
+as 模式：x as name 会将 x 匹配的值绑定到 name 上，这样可以在模式中使用它。
+这对于在模式中使用值的多个副本很有用，或者在模式中使用一个值的属性。\par
+模式可以使用具名常量。它们必须作为带点号的名称出现，以防止它们被解释为用于捕获的变量。\par
+\begin{listing}[h!]
+\begin{minted}{python}
+case Point(0, 0) as origin:
+    print("The origin is at", origin)
+...
+case Point(0, 0) as Point.ORIGIN:
+    print("The origin")
+\end{minted}  
+\end{listing}
+
+\section{while 语句}
+while 语句用于在表达式保持为真的情况下重复地执行,
+这将重复地检验表达式，并且如果其值为真就执行第一个子句体；
+如果表达式值为假（这可能在第一次检验时就发生）则如果 else 
+子句体存在就会被执行并终止循环。
+第一个子句体中的 break 语句在执行时将终止循环且不执行 else 子句体。 
+第一个子句体中的 continue 语句在执行时将跳过子句体中的剩余部分并返
+回检验表达式。
+
+\section{for 语句}
+for 语句用于迭代一个序列（例如列表、元组或字符串）或其他可迭代对象。
+for 循环的语法如下：\par
+\begin{listing}[h!]
+\begin{minted}{python}
+for target_list in starred_list:
+    statements(s)
+else:
+    final_statement(s)
+\end{minted}
+\end{listing}
+starred\_list 表达式会被求值一次；它应当产生一个 iterable 对象。 
+将针对该可迭代对象创建一个 iterator。 随后该迭代器所提供的第一个条目
+将使用标准的赋值规则被赋值给目标列表，而代码块将被执行。 
+此过程将针对该迭代器所提供每个条目重复进行。 当迭代器被耗尽时，
+如果存在 else 子句中的代码块，则它将被执行，并终结循环。\par
+第一个子句体中的 break 语句在执行时将终止循环且不执行 else 子句体。 
+第一个子句体中的 continue 语句在执行时将跳过子句体中的剩余部分并转往
+下一项继续执行，或者在没有下一项时转往 else 子句执行。\par
+
+for 循环会对目标列表中的变量进行赋值。 这将覆盖之前对这些
+变量的所有赋值，包括在 for 循环体中的赋值。目标列表中的名称在循环
+结束时不会被删除，但是如果序列为空，则它们将根本不会被循环所赋值。\par
+
+\section{range() 语句}
+内置函数 range() 用于生成等差数列，生成的序列绝不会包括给定的终止值；
+range(10) 生成 10 个值——长度为 10 的序列的所有合法索引。
+range 可以不从 0 开始，且可以按给定的步长递增（即使是负数步长）。\par
+\paragraph{class range(start, stop[, step])}
+range 构造器的参数必须为整数（可以是内置的 int 或任何实现了 \_\_index\_\_() 
+特殊方法的对象）。 如果省略 step 参数，则默认为 1。 如果省略 start 参数，
+则默认为 0。\par
+如果 step 为正值，确定 range r 内容的公式为
+\[
+    r[i] = start + step*i \ when\ i \geq 0 \ and\ r[i] < stop
+\]
+如果 step 为负值，确定 range r 内容的公式为:
+\[
+    r[i] = start + step*i \ when\ i \geq 0 \ and\ r[i] > stop
+\]
+\section{pass 语句}
+pass 语句什么也不做。它用于那些语法上需要语句但程序不需要执行任何操作的场合。
+\begin{listing}[h!]
+\begin{minted}{python}
+while True:
+    pass  # Busy-wait for keyboard interrupt (Ctrl+C)
+\end{minted}
+\end{listing}
 \end{document}
